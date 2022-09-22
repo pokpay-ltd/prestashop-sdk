@@ -1,6 +1,6 @@
 {
-  "description": "PokPay's PHP SDK for Checkout REST APIs",
-  "name": "rpay/pokpay-payments-sdk",
+  "description": "PokPay's Prestashop PHP SDK for Checkout REST APIs",
+  "name": "rpay/prestashop-pokpay-payments-sdk",
   "keywords": [
     "payments",
     "sdk",
@@ -12,7 +12,8 @@
     "guest-checkout",
     "guest checkout",
     "card-processing",
-    "card processing"
+    "card processing",
+    "prestashop"
   ],
   "homepage": "https://www.pokpay.io",
   "license": "Apache-2.0",
