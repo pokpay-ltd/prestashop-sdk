@@ -1,0 +1,36 @@
+{
+  "description": "PokPay's PHP SDK for Checkout REST APIs",
+  "name": "rpay/pokpay-payments-sdk",
+  "keywords": [
+    "payments",
+    "sdk",
+    "rest",
+    "api",
+    "pokpay",
+    "checkout",
+    "guestcheckout",
+    "guest-checkout",
+    "guest checkout",
+    "card-processing",
+    "card processing"
+  ],
+  "homepage": "https://www.pokpay.io",
+  "license": "Apache-2.0",
+  "authors": [
+    {
+      "name": "RPay.ai",
+      "homepage": "https://www.rpay.ai"
+    }
+  ],
+  "require": {
+    "php": "^7.3 || ^8.0",
+    "ext-curl": "*",
+    "ext-json": "*"
+  },
+  "autoload": {
+    "psr-4": { "RPay\\POK\\PaymentsSdk\\" : "lib/" }
+  },
+  "autoload-dev": {
+    "psr-4": { "RPay\\POK\\PaymentsSdk\\Test\\" : "test/" }
+  }
+}
