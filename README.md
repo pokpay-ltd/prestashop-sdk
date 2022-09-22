@@ -1,6 +1,6 @@
 # PokPay Payments SDK
 
-PokPay's PHP SDK for Checkout REST APIs
+PokPay's Prestashop PHP SDK for Checkout REST APIs
 
 ## Installation & Usage
 
@@ -11,7 +11,7 @@ Should also work with PHP 8.0 but has not been tested.
 
 ### Composer
 ```bash
-$ composer require rpay/pokpay-payments-sdk
+$ composer require rpay/prestashop-pokpay-payments-sdk
 ```
 
 ### Manual Installation
