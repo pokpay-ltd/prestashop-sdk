@@ -2,7 +2,7 @@
 /**
  * CreateSdkOrderPayload
  *
- * PHP version 7.3
+ * PHP version 7.0
  *
  * @category Class
  * @package  RPay\POK\PaymentsSdk
@@ -44,7 +44,7 @@ use \RPay\POK\PaymentsSdk\ObjectSerializer;
  */
 class CreateSdkOrderPayload implements ModelInterface, ArrayAccess, \JsonSerializable
 {
-    public const DISCRIMINATOR = null;
+    const DISCRIMINATOR = null;
 
     /**
       * The original name of the model.

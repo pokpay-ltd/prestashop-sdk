@@ -24,9 +24,10 @@
     }
   ],
   "require": {
-    "php": "^7.3 || ^8.0",
+    "php": "^7.0 || ^8.0",
     "ext-curl": "*",
-    "ext-json": "*"
+    "ext-json": "*",
+    "guzzlehttp/guzzle": "5"
   },
   "autoload": {
     "psr-4": { "RPay\\POK\\PaymentsSdk\\" : "lib/" }

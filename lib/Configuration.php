@@ -1,7 +1,7 @@
 <?php
 /**
  * Configuration
- * PHP version 7.3
+ * PHP version 7.0
  *
  * @category Class
  * @package  RPay\POK\PaymentsSdk
