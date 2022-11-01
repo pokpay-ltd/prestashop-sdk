@@ -27,16 +27,6 @@
 
 namespace RPay\POK\PaymentsSdk\Api;
 
-use GuzzleHttp\ClientInterface;
-use GuzzleHttp\Exception\RequestException;
-use GuzzleHttp\Message\Request;
-use GuzzleHttp\RequestOptions;
-use GuzzleHttp\Stream\Stream;
-use RPay\POK\PaymentsSdk\ApiException;
-use RPay\POK\PaymentsSdk\Configuration;
-use RPay\POK\PaymentsSdk\HeaderSelector;
-use RPay\POK\PaymentsSdk\ObjectSerializer;
-
 /**
  * MerchantsApi Class Doc Comment
  *
@@ -48,17 +38,17 @@ use RPay\POK\PaymentsSdk\ObjectSerializer;
 class MerchantsApi
 {
     /**
-     * @var ClientInterface
+     * @var GuzzleHttp\ClientInterface
      */
     protected $client;
 
     /**
-     * @var Configuration
+     * @var RPay\POK\PaymentsSdk\Configuration
      */
     protected $config;
 
     /**
-     * @var HeaderSelector
+     * @var RPay\POK\PaymentsSdk\HeaderSelector
      */
     protected $headerSelector;
 
@@ -75,21 +65,21 @@ class MerchantsApi
 
     /**
      * @param string          $merchantId id of the logged in merchant
-     * @param Configuration   $config Configuration
-     * @param ClientInterface $client
-     * @param HeaderSelector  $selector
+     * @param RPay\POK\PaymentsSdk\Configuration   $config Configuration
+     * @param GuzzleHttp\ClientInterface $client
+     * @param RPay\POK\PaymentsSdk\HeaderSelector  $selector
      * @param int             $hostIndex (Optional) host index to select the list of hosts if defined in the OpenAPI spec
      */
     public function __construct(
         $merchantId,
-        Configuration $config = null,
-        ClientInterface $client = null,
-        HeaderSelector $selector = null,
+        \RPay\POK\PaymentsSdk\Configuration $config = null,
+        \GuzzleHttp\ClientInterface $client = null,
+        \RPay\POK\PaymentsSdk\HeaderSelector $selector = null,
         $hostIndex = 0
     ) {
         $this->client = $client;
-        $this->config = $config ?: Configuration::getDefaultConfiguration();
-        $this->headerSelector = $selector ?: new HeaderSelector();
+        $this->config = $config ?: \RPay\POK\PaymentsSdk\Configuration::getDefaultConfiguration();
+        $this->headerSelector = $selector ?: new \RPay\POK\PaymentsSdk\HeaderSelector();
         $this->merchantId = $merchantId;
         $this->hostIndex = $hostIndex;
     }
@@ -115,7 +105,7 @@ class MerchantsApi
     }
 
     /**
-     * @return Configuration
+     * @return RPay\POK\PaymentsSdk\Configuration
      */
     public function getConfig()
     {
@@ -159,8 +149,8 @@ class MerchantsApi
             $options = $this->createHttpClientOption();
             try {
                 $response = $this->client->send($request, $options);
-            } catch (RequestException $e) {
-                throw new ApiException(
+            } catch (\GuzzleHttp\Exception\RequestException $e) {
+                throw new \RPay\POK\PaymentsSdk\ApiException(
                     "[{$e->getCode()}] {$e->getMessage()}",
                     (int) $e->getCode(),
                     $e->getResponse() ? $e->getResponse()->getHeaders() : null,
@@ -171,7 +161,7 @@ class MerchantsApi
             $statusCode = $response->getStatusCode();
 
             if ($statusCode < 200 || $statusCode > 299) {
-                throw new ApiException(
+                throw new \RPay\POK\PaymentsSdk\ApiException(
                     sprintf(
                         '[%d] Error connecting to the API (%s)',
                         $statusCode,
@@ -192,7 +182,7 @@ class MerchantsApi
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, '\RPay\POK\PaymentsSdk\Model\SdkOrderResponse', []),
+                        \RPay\POK\PaymentsSdk\ObjectSerializer::deserialize($content, '\RPay\POK\PaymentsSdk\Model\SdkOrderResponse', []),
                         $response->getStatusCode(),
                         $response->getHeaders()
                     ];
@@ -204,7 +194,7 @@ class MerchantsApi
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, '\RPay\POK\PaymentsSdk\Model\ErrorResponse', []),
+                        \RPay\POK\PaymentsSdk\ObjectSerializer::deserialize($content, '\RPay\POK\PaymentsSdk\Model\ErrorResponse', []),
                         $response->getStatusCode(),
                         $response->getHeaders()
                     ];
@@ -216,7 +206,7 @@ class MerchantsApi
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, '\RPay\POK\PaymentsSdk\Model\ErrorResponse', []),
+                        \RPay\POK\PaymentsSdk\ObjectSerializer::deserialize($content, '\RPay\POK\PaymentsSdk\Model\ErrorResponse', []),
                         $response->getStatusCode(),
                         $response->getHeaders()
                     ];
@@ -228,7 +218,7 @@ class MerchantsApi
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, '\RPay\POK\PaymentsSdk\Model\ErrorResponse', []),
+                        \RPay\POK\PaymentsSdk\ObjectSerializer::deserialize($content, '\RPay\POK\PaymentsSdk\Model\ErrorResponse', []),
                         $response->getStatusCode(),
                         $response->getHeaders()
                     ];
@@ -242,15 +232,15 @@ class MerchantsApi
             }
 
             return [
-                ObjectSerializer::deserialize($content, $returnType, []),
+                \RPay\POK\PaymentsSdk\ObjectSerializer::deserialize($content, $returnType, []),
                 $response->getStatusCode(),
                 $response->getHeaders()
             ];
 
-        } catch (ApiException $e) {
+        } catch (\RPay\POK\PaymentsSdk\ApiException $e) {
             switch ($e->getCode()) {
                 case 200:
-                    $data = ObjectSerializer::deserialize(
+                    $data = \RPay\POK\PaymentsSdk\ObjectSerializer::deserialize(
                         $e->getResponseBody(),
                         '\RPay\POK\PaymentsSdk\Model\SdkOrderResponse',
                         $e->getResponseHeaders()
@@ -258,7 +248,7 @@ class MerchantsApi
                     $e->setResponseObject($data);
                     break;
                 case 402:
-                    $data = ObjectSerializer::deserialize(
+                    $data = \RPay\POK\PaymentsSdk\ObjectSerializer::deserialize(
                         $e->getResponseBody(),
                         '\RPay\POK\PaymentsSdk\Model\ErrorResponse',
                         $e->getResponseHeaders()
@@ -266,7 +256,7 @@ class MerchantsApi
                     $e->setResponseObject($data);
                     break;
                 case 404:
-                    $data = ObjectSerializer::deserialize(
+                    $data = \RPay\POK\PaymentsSdk\ObjectSerializer::deserialize(
                         $e->getResponseBody(),
                         '\RPay\POK\PaymentsSdk\Model\ErrorResponse',
                         $e->getResponseHeaders()
@@ -274,7 +264,7 @@ class MerchantsApi
                     $e->setResponseObject($data);
                     break;
                 case 500:
-                    $data = ObjectSerializer::deserialize(
+                    $data = \RPay\POK\PaymentsSdk\ObjectSerializer::deserialize(
                         $e->getResponseBody(),
                         '\RPay\POK\PaymentsSdk\Model\ErrorResponse',
                         $e->getResponseHeaders()
@@ -334,7 +324,7 @@ class MerchantsApi
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, $returnType, []),
+                        \RPay\POK\PaymentsSdk\ObjectSerializer::deserialize($content, $returnType, []),
                         $response->getStatusCode(),
                         $response->getHeaders()
                     ];
@@ -342,7 +332,7 @@ class MerchantsApi
                 function ($exception) {
                     $response = $exception->getResponse();
                     $statusCode = $response->getStatusCode();
-                    throw new ApiException(
+                    throw new \RPay\POK\PaymentsSdk\ApiException(
                         sprintf(
                             '[%d] Error connecting to the API (%s)',
                             $statusCode,
@@ -390,7 +380,7 @@ class MerchantsApi
         if ($merchantId !== null) {
             $resourcePath = str_replace(
                 '{' . 'merchantId' . '}',
-                ObjectSerializer::toPathValue($merchantId),
+                \RPay\POK\PaymentsSdk\ObjectSerializer::toPathValue($merchantId),
                 $resourcePath
             );
         }
@@ -398,7 +388,7 @@ class MerchantsApi
         if ($sdkOrderId !== null) {
             $resourcePath = str_replace(
                 '{' . 'sdkOrderId' . '}',
-                ObjectSerializer::toPathValue($sdkOrderId),
+                \RPay\POK\PaymentsSdk\ObjectSerializer::toPathValue($sdkOrderId),
                 $resourcePath
             );
         }
@@ -437,8 +427,8 @@ class MerchantsApi
         );
 
         $query = http_build_query($queryParams);
-        $httpBody = Stream::factory($httpBody);
-        return new Request(
+        $httpBody = \GuzzleHttp\Stream\Stream::factory($httpBody);
+        return new \GuzzleHttp\Message\Request(
             'POST',
             $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
             $headers,
@@ -483,8 +473,8 @@ class MerchantsApi
             $options = $this->createHttpClientOption();
             try {
                 $response = $this->client->send($request, $options);
-            } catch (RequestException $e) {
-                throw new ApiException(
+            } catch (\GuzzleHttp\Exception\RequestException $e) {
+                throw new \RPay\POK\PaymentsSdk\ApiException(
                     "[{$e->getCode()}] {$e->getMessage()}",
                     (int) $e->getCode(),
                     $e->getResponse() ? $e->getResponse()->getHeaders() : null,
@@ -495,7 +485,7 @@ class MerchantsApi
             $statusCode = $response->getStatusCode();
 
             if ($statusCode < 200 || $statusCode > 299) {
-                throw new ApiException(
+                throw new \RPay\POK\PaymentsSdk\ApiException(
                     sprintf(
                         '[%d] Error connecting to the API (%s)',
                         $statusCode,
@@ -516,7 +506,7 @@ class MerchantsApi
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, '\RPay\POK\PaymentsSdk\Model\SdkOrderResponse', []),
+                        \RPay\POK\PaymentsSdk\ObjectSerializer::deserialize($content, '\RPay\POK\PaymentsSdk\Model\SdkOrderResponse', []),
                         $response->getStatusCode(),
                         $response->getHeaders()
                     ];
@@ -528,7 +518,7 @@ class MerchantsApi
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, '\RPay\POK\PaymentsSdk\Model\ErrorResponse', []),
+                        \RPay\POK\PaymentsSdk\ObjectSerializer::deserialize($content, '\RPay\POK\PaymentsSdk\Model\ErrorResponse', []),
                         $response->getStatusCode(),
                         $response->getHeaders()
                     ];
@@ -542,15 +532,15 @@ class MerchantsApi
             }
 
             return [
-                ObjectSerializer::deserialize($content, $returnType, []),
+                \RPay\POK\PaymentsSdk\ObjectSerializer::deserialize($content, $returnType, []),
                 $response->getStatusCode(),
                 $response->getHeaders()
             ];
 
-        } catch (ApiException $e) {
+        } catch (\RPay\POK\PaymentsSdk\ApiException $e) {
             switch ($e->getCode()) {
                 case 200:
-                    $data = ObjectSerializer::deserialize(
+                    $data = \RPay\POK\PaymentsSdk\ObjectSerializer::deserialize(
                         $e->getResponseBody(),
                         '\RPay\POK\PaymentsSdk\Model\SdkOrderResponse',
                         $e->getResponseHeaders()
@@ -558,7 +548,7 @@ class MerchantsApi
                     $e->setResponseObject($data);
                     break;
                 case 500:
-                    $data = ObjectSerializer::deserialize(
+                    $data = \RPay\POK\PaymentsSdk\ObjectSerializer::deserialize(
                         $e->getResponseBody(),
                         '\RPay\POK\PaymentsSdk\Model\ErrorResponse',
                         $e->getResponseHeaders()
@@ -618,7 +608,7 @@ class MerchantsApi
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, $returnType, []),
+                        \RPay\POK\PaymentsSdk\ObjectSerializer::deserialize($content, $returnType, []),
                         $response->getStatusCode(),
                         $response->getHeaders()
                     ];
@@ -626,7 +616,7 @@ class MerchantsApi
                 function ($exception) {
                     $response = $exception->getResponse();
                     $statusCode = $response->getStatusCode();
-                    throw new ApiException(
+                    throw new \RPay\POK\PaymentsSdk\ApiException(
                         sprintf(
                             '[%d] Error connecting to the API (%s)',
                             $statusCode,
@@ -668,7 +658,7 @@ class MerchantsApi
         if ($merchantId !== null) {
             $resourcePath = str_replace(
                 '{' . 'merchantId' . '}',
-                ObjectSerializer::toPathValue($merchantId),
+                \RPay\POK\PaymentsSdk\ObjectSerializer::toPathValue($merchantId),
                 $resourcePath
             );
         }
@@ -681,7 +671,7 @@ class MerchantsApi
         // for model (json/xml)
         if (isset($body)) {
             if ($headers['Content-Type'] === 'application/json') {
-                $httpBody = json_encode(ObjectSerializer::sanitizeForSerialization($body));
+                $httpBody = json_encode(\RPay\POK\PaymentsSdk\ObjectSerializer::sanitizeForSerialization($body));
             } else {
                 $httpBody = $body;
             }
@@ -713,8 +703,8 @@ class MerchantsApi
         );
 
         $query = http_build_query($queryParams);
-        $httpBody = Stream::factory($httpBody);
-        return new Request(
+        $httpBody = \GuzzleHttp\Stream\Stream::factory($httpBody);
+        return new \GuzzleHttp\Message\Request(
             'POST',
             $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
             $headers,
@@ -732,8 +722,8 @@ class MerchantsApi
     {
         $options = [];
         if ($this->config->getDebug()) {
-            $options[RequestOptions::DEBUG] = fopen($this->config->getDebugFile(), 'a');
-            if (!$options[RequestOptions::DEBUG]) {
+            $options[\GuzzleHttp\RequestOptions::DEBUG] = fopen($this->config->getDebugFile(), 'a');
+            if (!$options[\GuzzleHttp\RequestOptions::DEBUG]) {
                 throw new \RuntimeException('Failed to open the debug file: ' . $this->config->getDebugFile());
             }
         }

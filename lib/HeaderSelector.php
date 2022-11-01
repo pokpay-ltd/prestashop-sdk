@@ -27,8 +27,6 @@
 
 namespace RPay\POK\PaymentsSdk;
 
-use \Exception;
-
 /**
  * ApiException Class Doc Comment
  *

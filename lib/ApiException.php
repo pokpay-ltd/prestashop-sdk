@@ -27,8 +27,6 @@
 
 namespace RPay\POK\PaymentsSdk;
 
-use \Exception;
-
 /**
  * ApiException Class Doc Comment
  *
@@ -37,7 +35,7 @@ use \Exception;
  * @author   OpenAPI Generator team
  * @link     https://openapi-generator.tech
  */
-class ApiException extends Exception
+class ApiException extends \Exception
 {
 
     /**

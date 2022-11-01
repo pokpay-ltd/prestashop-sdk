@@ -28,9 +28,6 @@
 
 namespace RPay\POK\PaymentsSdk\Model;
 
-use \ArrayAccess;
-use \RPay\POK\PaymentsSdk\ObjectSerializer;
-
 /**
  * SdkOrderSplitWith Class Doc Comment
  *
@@ -42,7 +39,7 @@ use \RPay\POK\PaymentsSdk\ObjectSerializer;
  * @template TKey int|null
  * @template TValue mixed|null
  */
-class SdkOrderSplitWith implements ModelInterface, ArrayAccess, \JsonSerializable
+class SdkOrderSplitWith implements ModelInterface, \ArrayAccess, \JsonSerializable
 {
     const DISCRIMINATOR = null;
 
@@ -320,7 +317,7 @@ class SdkOrderSplitWith implements ModelInterface, ArrayAccess, \JsonSerializabl
      */
     public function jsonSerialize()
     {
-       return ObjectSerializer::sanitizeForSerialization($this);
+       return \RPay\POK\PaymentsSdk\ObjectSerializer::sanitizeForSerialization($this);
     }
 
     /**
@@ -331,7 +328,7 @@ class SdkOrderSplitWith implements ModelInterface, ArrayAccess, \JsonSerializabl
     public function __toString()
     {
         return json_encode(
-            ObjectSerializer::sanitizeForSerialization($this),
+            \RPay\POK\PaymentsSdk\ObjectSerializer::sanitizeForSerialization($this),
             JSON_PRETTY_PRINT
         );
     }
@@ -343,7 +340,7 @@ class SdkOrderSplitWith implements ModelInterface, ArrayAccess, \JsonSerializabl
      */
     public function toHeaderValue()
     {
-        return json_encode(ObjectSerializer::sanitizeForSerialization($this));
+        return json_encode(\RPay\POK\PaymentsSdk\ObjectSerializer::sanitizeForSerialization($this));
     }
 }
 

@@ -28,9 +28,6 @@
 
 namespace RPay\POK\PaymentsSdk\Model;
 
-use \ArrayAccess;
-use \RPay\POK\PaymentsSdk\ObjectSerializer;
-
 /**
  * ConfirmSdkOrderGuestPayload Class Doc Comment
  *
@@ -42,7 +39,7 @@ use \RPay\POK\PaymentsSdk\ObjectSerializer;
  * @template TKey int|null
  * @template TValue mixed|null
  */
-class ConfirmSdkOrderGuestPayload implements ModelInterface, ArrayAccess, \JsonSerializable
+class ConfirmSdkOrderGuestPayload implements ModelInterface, \ArrayAccess, \JsonSerializable
 {
     const DISCRIMINATOR = null;
 
@@ -293,7 +290,7 @@ class ConfirmSdkOrderGuestPayload implements ModelInterface, ArrayAccess, \JsonS
      */
     public function jsonSerialize()
     {
-       return ObjectSerializer::sanitizeForSerialization($this);
+       return \RPay\POK\PaymentsSdk\ObjectSerializer::sanitizeForSerialization($this);
     }
 
     /**
@@ -304,7 +301,7 @@ class ConfirmSdkOrderGuestPayload implements ModelInterface, ArrayAccess, \JsonS
     public function __toString()
     {
         return json_encode(
-            ObjectSerializer::sanitizeForSerialization($this),
+            \RPay\POK\PaymentsSdk\ObjectSerializer::sanitizeForSerialization($this),
             JSON_PRETTY_PRINT
         );
     }
@@ -316,7 +313,7 @@ class ConfirmSdkOrderGuestPayload implements ModelInterface, ArrayAccess, \JsonS
      */
     public function toHeaderValue()
     {
-        return json_encode(ObjectSerializer::sanitizeForSerialization($this));
+        return json_encode(\RPay\POK\PaymentsSdk\ObjectSerializer::sanitizeForSerialization($this));
     }
 }
 

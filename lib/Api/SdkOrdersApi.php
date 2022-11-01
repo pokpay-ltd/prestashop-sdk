@@ -27,16 +27,6 @@
 
 namespace RPay\POK\PaymentsSdk\Api;
 
-use GuzzleHttp\ClientInterface;
-use GuzzleHttp\Exception\RequestException;
-use GuzzleHttp\Message\Request;
-use GuzzleHttp\RequestOptions;
-use GuzzleHttp\Stream\Stream;
-use RPay\POK\PaymentsSdk\ApiException;
-use RPay\POK\PaymentsSdk\Configuration;
-use RPay\POK\PaymentsSdk\HeaderSelector;
-use RPay\POK\PaymentsSdk\ObjectSerializer;
-
 /**
  * SdkOrdersApi Class Doc Comment
  *
@@ -74,14 +64,14 @@ class SdkOrdersApi
      * @param int             $hostIndex (Optional) host index to select the list of hosts if defined in the OpenAPI spec
      */
     public function __construct(
-        Configuration $config = null,
-        ClientInterface $client = null,
-        HeaderSelector $selector = null,
+        \Rpay\POK\PaymentsSdk\Configuration $config = null,
+        \GuzzleHttp\ClientInterface $client = null,
+        \Rpay\POK\PaymentsSdk\HeaderSelector $selector = null,
         $hostIndex = 0
     ) {
         $this->client = $client;
-        $this->config = $config ?: Configuration::getDefaultConfiguration();
-        $this->headerSelector = $selector ?: new HeaderSelector();
+        $this->config = $config ?: \Rpay\POK\PaymentsSdk\Configuration::getDefaultConfiguration();
+        $this->headerSelector = $selector ?: new \Rpay\POK\PaymentsSdk\HeaderSelector();
         $this->hostIndex = $hostIndex;
     }
 
@@ -151,8 +141,8 @@ class SdkOrdersApi
             $options = $this->createHttpClientOption();
             try {
                 $response = $this->client->send($request, $options);
-            } catch (RequestException $e) {
-                throw new ApiException(
+            } catch (\GuzzleHttp\Exception\RequestException $e) {
+                throw new \Rpay\POK\PaymentsSdk\ApiException(
                     "[{$e->getCode()}] {$e->getMessage()}",
                     (int) $e->getCode(),
                     $e->getResponse() ? $e->getResponse()->getHeaders() : null,
@@ -163,7 +153,7 @@ class SdkOrdersApi
             $statusCode = $response->getStatusCode();
 
             if ($statusCode < 200 || $statusCode > 299) {
-                throw new ApiException(
+                throw new \Rpay\POK\PaymentsSdk\ApiException(
                     sprintf(
                         '[%d] Error connecting to the API (%s)',
                         $statusCode,
@@ -184,7 +174,7 @@ class SdkOrdersApi
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, '\RPay\POK\PaymentsSdk\Model\SdkOrderResponse', []),
+                        \Rpay\POK\PaymentsSdk\ObjectSerializer::deserialize($content, '\RPay\POK\PaymentsSdk\Model\SdkOrderResponse', []),
                         $response->getStatusCode(),
                         $response->getHeaders()
                     ];
@@ -196,7 +186,7 @@ class SdkOrdersApi
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, '\RPay\POK\PaymentsSdk\Model\ErrorResponse', []),
+                        \Rpay\POK\PaymentsSdk\ObjectSerializer::deserialize($content, '\RPay\POK\PaymentsSdk\Model\ErrorResponse', []),
                         $response->getStatusCode(),
                         $response->getHeaders()
                     ];
@@ -208,7 +198,7 @@ class SdkOrdersApi
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, '\RPay\POK\PaymentsSdk\Model\ErrorResponse', []),
+                        \Rpay\POK\PaymentsSdk\ObjectSerializer::deserialize($content, '\RPay\POK\PaymentsSdk\Model\ErrorResponse', []),
                         $response->getStatusCode(),
                         $response->getHeaders()
                     ];
@@ -220,7 +210,7 @@ class SdkOrdersApi
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, '\RPay\POK\PaymentsSdk\Model\ErrorResponse', []),
+                        \Rpay\POK\PaymentsSdk\ObjectSerializer::deserialize($content, '\RPay\POK\PaymentsSdk\Model\ErrorResponse', []),
                         $response->getStatusCode(),
                         $response->getHeaders()
                     ];
@@ -234,15 +224,15 @@ class SdkOrdersApi
             }
 
             return [
-                ObjectSerializer::deserialize($content, $returnType, []),
+                \Rpay\POK\PaymentsSdk\ObjectSerializer::deserialize($content, $returnType, []),
                 $response->getStatusCode(),
                 $response->getHeaders()
             ];
 
-        } catch (ApiException $e) {
+        } catch (\Rpay\POK\PaymentsSdk\ApiException $e) {
             switch ($e->getCode()) {
                 case 200:
-                    $data = ObjectSerializer::deserialize(
+                    $data = \Rpay\POK\PaymentsSdk\ObjectSerializer::deserialize(
                         $e->getResponseBody(),
                         '\RPay\POK\PaymentsSdk\Model\SdkOrderResponse',
                         $e->getResponseHeaders()
@@ -250,7 +240,7 @@ class SdkOrdersApi
                     $e->setResponseObject($data);
                     break;
                 case 404:
-                    $data = ObjectSerializer::deserialize(
+                    $data = \Rpay\POK\PaymentsSdk\ObjectSerializer::deserialize(
                         $e->getResponseBody(),
                         '\RPay\POK\PaymentsSdk\Model\ErrorResponse',
                         $e->getResponseHeaders()
@@ -258,7 +248,7 @@ class SdkOrdersApi
                     $e->setResponseObject($data);
                     break;
                 case 406:
-                    $data = ObjectSerializer::deserialize(
+                    $data = \Rpay\POK\PaymentsSdk\ObjectSerializer::deserialize(
                         $e->getResponseBody(),
                         '\RPay\POK\PaymentsSdk\Model\ErrorResponse',
                         $e->getResponseHeaders()
@@ -266,7 +256,7 @@ class SdkOrdersApi
                     $e->setResponseObject($data);
                     break;
                 case 500:
-                    $data = ObjectSerializer::deserialize(
+                    $data = \Rpay\POK\PaymentsSdk\ObjectSerializer::deserialize(
                         $e->getResponseBody(),
                         '\RPay\POK\PaymentsSdk\Model\ErrorResponse',
                         $e->getResponseHeaders()
@@ -326,7 +316,7 @@ class SdkOrdersApi
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, $returnType, []),
+                        \Rpay\POK\PaymentsSdk\ObjectSerializer::deserialize($content, $returnType, []),
                         $response->getStatusCode(),
                         $response->getHeaders()
                     ];
@@ -334,7 +324,7 @@ class SdkOrdersApi
                 function ($exception) {
                     $response = $exception->getResponse();
                     $statusCode = $response->getStatusCode();
-                    throw new ApiException(
+                    throw new \Rpay\POK\PaymentsSdk\ApiException(
                         sprintf(
                             '[%d] Error connecting to the API (%s)',
                             $statusCode,
@@ -376,7 +366,7 @@ class SdkOrdersApi
         if ($sdkOrderId !== null) {
             $resourcePath = str_replace(
                 '{' . 'sdkOrderId' . '}',
-                ObjectSerializer::toPathValue($sdkOrderId),
+                \Rpay\POK\PaymentsSdk\ObjectSerializer::toPathValue($sdkOrderId),
                 $resourcePath
             );
         }
@@ -390,7 +380,7 @@ class SdkOrdersApi
         // for model (json/xml)
         if (isset($body)) {
             if ($headers['Content-Type'] === 'application/json') {
-                $httpBody = json_encode(ObjectSerializer::sanitizeForSerialization($body));
+                $httpBody = json_encode(\RPay\POK\PaymentsSdk\ObjectSerializer::sanitizeForSerialization($body));
             } else {
                 $httpBody = $body;
             }
@@ -422,8 +412,8 @@ class SdkOrdersApi
         );
 
         $query = http_build_query($queryParams);
-        $httpBody = Stream::factory($httpBody);
-        return new Request(
+        $httpBody = \GuzzleHttp\Stream\Stream::factory($httpBody);
+        return new \GuzzleHttp\Message\Request(
             'POST',
             $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
             $headers,
@@ -469,8 +459,8 @@ class SdkOrdersApi
             $options = $this->createHttpClientOption();
             try {
                 $response = $this->client->send($request, $options);
-            } catch (RequestException $e) {
-                throw new ApiException(
+            } catch (\GuzzleHttp\Exception\RequestException $e) {
+                throw new \Rpay\POK\PaymentsSdk\ApiException(
                     "[{$e->getCode()}] {$e->getMessage()}",
                     (int) $e->getCode(),
                     $e->getResponse() ? $e->getResponse()->getHeaders() : null,
@@ -481,7 +471,7 @@ class SdkOrdersApi
             $statusCode = $response->getStatusCode();
 
             if ($statusCode < 200 || $statusCode > 299) {
-                throw new ApiException(
+                throw new \Rpay\POK\PaymentsSdk\ApiException(
                     sprintf(
                         '[%d] Error connecting to the API (%s)',
                         $statusCode,
@@ -502,7 +492,7 @@ class SdkOrdersApi
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, '\RPay\POK\PaymentsSdk\Model\SdkOrderResponse', []),
+                        \Rpay\POK\PaymentsSdk\ObjectSerializer::deserialize($content, '\RPay\POK\PaymentsSdk\Model\SdkOrderResponse', []),
                         $response->getStatusCode(),
                         $response->getHeaders()
                     ];
@@ -514,7 +504,7 @@ class SdkOrdersApi
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, '\RPay\POK\PaymentsSdk\Model\ErrorResponse', []),
+                        \RPay\POK\PaymentsSdk\ObjectSerializer::deserialize($content, '\RPay\POK\PaymentsSdk\Model\ErrorResponse', []),
                         $response->getStatusCode(),
                         $response->getHeaders()
                     ];
@@ -526,7 +516,7 @@ class SdkOrdersApi
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, '\RPay\POK\PaymentsSdk\Model\ErrorResponse', []),
+                        \Rpay\POK\PaymentsSdk\ObjectSerializer::deserialize($content, '\RPay\POK\PaymentsSdk\Model\ErrorResponse', []),
                         $response->getStatusCode(),
                         $response->getHeaders()
                     ];
@@ -538,7 +528,7 @@ class SdkOrdersApi
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, '\RPay\POK\PaymentsSdk\Model\ErrorResponse', []),
+                        \Rpay\POK\PaymentsSdk\ObjectSerializer::deserialize($content, '\RPay\POK\PaymentsSdk\Model\ErrorResponse', []),
                         $response->getStatusCode(),
                         $response->getHeaders()
                     ];
@@ -552,15 +542,15 @@ class SdkOrdersApi
             }
 
             return [
-                ObjectSerializer::deserialize($content, $returnType, []),
+                \Rpay\POK\PaymentsSdk\ObjectSerializer::deserialize($content, $returnType, []),
                 $response->getStatusCode(),
                 $response->getHeaders()
             ];
 
-        } catch (ApiException $e) {
+        } catch (\Rpay\POK\PaymentsSdk\ApiException $e) {
             switch ($e->getCode()) {
                 case 200:
-                    $data = ObjectSerializer::deserialize(
+                    $data = \Rpay\POK\PaymentsSdk\ObjectSerializer::deserialize(
                         $e->getResponseBody(),
                         '\RPay\POK\PaymentsSdk\Model\SdkOrderResponse',
                         $e->getResponseHeaders()
@@ -568,15 +558,15 @@ class SdkOrdersApi
                     $e->setResponseObject($data);
                     break;
                 case 404:
-                    $data = ObjectSerializer::deserialize(
+                    $data = \Rpay\POK\PaymentsSdk\ObjectSerializer::deserialize(
                         $e->getResponseBody(),
-                        '\RPay\POK\PaymentsSdk\Model\ErrorResponse',
+                        '\Rpay\POK\PaymentsSdk\Model\ErrorResponse',
                         $e->getResponseHeaders()
                     );
                     $e->setResponseObject($data);
                     break;
                 case 406:
-                    $data = ObjectSerializer::deserialize(
+                    $data = \Rpay\POK\PaymentsSdk\ObjectSerializer::deserialize(
                         $e->getResponseBody(),
                         '\RPay\POK\PaymentsSdk\Model\ErrorResponse',
                         $e->getResponseHeaders()
@@ -584,7 +574,7 @@ class SdkOrdersApi
                     $e->setResponseObject($data);
                     break;
                 case 500:
-                    $data = ObjectSerializer::deserialize(
+                    $data = \Rpay\POK\PaymentsSdk\ObjectSerializer::deserialize(
                         $e->getResponseBody(),
                         '\RPay\POK\PaymentsSdk\Model\ErrorResponse',
                         $e->getResponseHeaders()
@@ -644,7 +634,7 @@ class SdkOrdersApi
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, $returnType, []),
+                        \Rpay\POK\PaymentsSdk\ObjectSerializer::deserialize($content, $returnType, []),
                         $response->getStatusCode(),
                         $response->getHeaders()
                     ];
@@ -652,7 +642,7 @@ class SdkOrdersApi
                 function ($exception) {
                     $response = $exception->getResponse();
                     $statusCode = $response->getStatusCode();
-                    throw new ApiException(
+                    throw new \Rpay\POK\PaymentsSdk\ApiException(
                         sprintf(
                             '[%d] Error connecting to the API (%s)',
                             $statusCode,
@@ -694,7 +684,7 @@ class SdkOrdersApi
         if ($sdkOrderId !== null) {
             $resourcePath = str_replace(
                 '{' . 'sdkOrderId' . '}',
-                ObjectSerializer::toPathValue($sdkOrderId),
+                \Rpay\POK\PaymentsSdk\ObjectSerializer::toPathValue($sdkOrderId),
                 $resourcePath
             );
         }
@@ -708,7 +698,7 @@ class SdkOrdersApi
         // for model (json/xml)
         if (isset($body)) {
             if ($headers['Content-Type'] === 'application/json') {
-                $httpBody = json_encode(ObjectSerializer::sanitizeForSerialization($body));
+                $httpBody = json_encode(\Rpay\POK\PaymentsSdk\ObjectSerializer::sanitizeForSerialization($body));
             } else {
                 $httpBody = $body;
             }
@@ -735,8 +725,8 @@ class SdkOrdersApi
         );
 
         $query = http_build_query($queryParams);
-        $httpBody = Stream::factory($httpBody);
-        return new Request(
+        $httpBody = \GuzzleHttp\Stream\Stream::factory($httpBody);
+        return new \GuzzleHttp\Message\Request(
             'POST',
             $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
             $headers,
@@ -780,8 +770,8 @@ class SdkOrdersApi
             $options = $this->createHttpClientOption();
             try {
                 $response = $this->client->send($request, $options);
-            } catch (RequestException $e) {
-                throw new ApiException(
+            } catch (\GuzzleHttp\Exception\RequestException $e) {
+                throw new \Rpay\POK\PaymentsSdk\ApiException(
                     "[{$e->getCode()}] {$e->getMessage()}",
                     (int) $e->getCode(),
                     $e->getResponse() ? $e->getResponse()->getHeaders() : null,
@@ -792,7 +782,7 @@ class SdkOrdersApi
             $statusCode = $response->getStatusCode();
 
             if ($statusCode < 200 || $statusCode > 299) {
-                throw new ApiException(
+                throw new \Rpay\POK\PaymentsSdk\ApiException(
                     sprintf(
                         '[%d] Error connecting to the API (%s)',
                         $statusCode,
@@ -813,7 +803,7 @@ class SdkOrdersApi
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, '\RPay\POK\PaymentsSdk\Model\SdkOrderResponse', []),
+                        \Rpay\POK\PaymentsSdk\ObjectSerializer::deserialize($content, '\RPay\POK\PaymentsSdk\Model\SdkOrderResponse', []),
                         $response->getStatusCode(),
                         $response->getHeaders()
                     ];
@@ -825,7 +815,7 @@ class SdkOrdersApi
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, '\RPay\POK\PaymentsSdk\Model\ErrorResponse', []),
+                        \Rpay\POK\PaymentsSdk\ObjectSerializer::deserialize($content, '\RPay\POK\PaymentsSdk\Model\ErrorResponse', []),
                         $response->getStatusCode(),
                         $response->getHeaders()
                     ];
@@ -837,7 +827,7 @@ class SdkOrdersApi
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, '\RPay\POK\PaymentsSdk\Model\ErrorResponse', []),
+                        \Rpay\POK\PaymentsSdk\ObjectSerializer::deserialize($content, '\RPay\POK\PaymentsSdk\Model\ErrorResponse', []),
                         $response->getStatusCode(),
                         $response->getHeaders()
                     ];
@@ -849,7 +839,7 @@ class SdkOrdersApi
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, '\RPay\POK\PaymentsSdk\Model\ErrorResponse', []),
+                        \Rpay\POK\PaymentsSdk\ObjectSerializer::deserialize($content, '\RPay\POK\PaymentsSdk\Model\ErrorResponse', []),
                         $response->getStatusCode(),
                         $response->getHeaders()
                     ];
@@ -863,15 +853,15 @@ class SdkOrdersApi
             }
 
             return [
-                ObjectSerializer::deserialize($content, $returnType, []),
+                \Rpay\POK\PaymentsSdk\ObjectSerializer::deserialize($content, $returnType, []),
                 $response->getStatusCode(),
                 $response->getHeaders()
             ];
 
-        } catch (ApiException $e) {
+        } catch (\Rpay\POK\PaymentsSdk\ApiException $e) {
             switch ($e->getCode()) {
                 case 200:
-                    $data = ObjectSerializer::deserialize(
+                    $data = \Rpay\POK\PaymentsSdk\ObjectSerializer::deserialize(
                         $e->getResponseBody(),
                         '\RPay\POK\PaymentsSdk\Model\SdkOrderResponse',
                         $e->getResponseHeaders()
@@ -879,7 +869,7 @@ class SdkOrdersApi
                     $e->setResponseObject($data);
                     break;
                 case 404:
-                    $data = ObjectSerializer::deserialize(
+                    $data = \Rpay\POK\PaymentsSdk\ObjectSerializer::deserialize(
                         $e->getResponseBody(),
                         '\RPay\POK\PaymentsSdk\Model\ErrorResponse',
                         $e->getResponseHeaders()
@@ -887,7 +877,7 @@ class SdkOrdersApi
                     $e->setResponseObject($data);
                     break;
                 case 410:
-                    $data = ObjectSerializer::deserialize(
+                    $data = \Rpay\POK\PaymentsSdk\ObjectSerializer::deserialize(
                         $e->getResponseBody(),
                         '\RPay\POK\PaymentsSdk\Model\ErrorResponse',
                         $e->getResponseHeaders()
@@ -895,7 +885,7 @@ class SdkOrdersApi
                     $e->setResponseObject($data);
                     break;
                 case 500:
-                    $data = ObjectSerializer::deserialize(
+                    $data = \Rpay\POK\PaymentsSdk\ObjectSerializer::deserialize(
                         $e->getResponseBody(),
                         '\RPay\POK\PaymentsSdk\Model\ErrorResponse',
                         $e->getResponseHeaders()
@@ -953,7 +943,7 @@ class SdkOrdersApi
                     }
 
                     return [
-                        ObjectSerializer::deserialize($content, $returnType, []),
+                        \Rpay\POK\PaymentsSdk\ObjectSerializer::deserialize($content, $returnType, []),
                         $response->getStatusCode(),
                         $response->getHeaders()
                     ];
@@ -961,7 +951,7 @@ class SdkOrdersApi
                 function ($exception) {
                     $response = $exception->getResponse();
                     $statusCode = $response->getStatusCode();
-                    throw new ApiException(
+                    throw new \Rpay\POK\PaymentsSdk\ApiException(
                         sprintf(
                             '[%d] Error connecting to the API (%s)',
                             $statusCode,
@@ -1001,7 +991,7 @@ class SdkOrdersApi
         if ($sdkOrderId !== null) {
             $resourcePath = str_replace(
                 '{' . 'sdkOrderId' . '}',
-                ObjectSerializer::toPathValue($sdkOrderId),
+                \Rpay\POK\PaymentsSdk\ObjectSerializer::toPathValue($sdkOrderId),
                 $resourcePath
             );
         }
@@ -1036,8 +1026,8 @@ class SdkOrdersApi
         );
 
         $query = http_build_query($queryParams);
-        $httpBody = Stream::factory($httpBody);
-        return new Request(
+        $httpBody = \GuzzleHttp\Stream\Stream::factory($httpBody);
+        return new \GuzzleHttp\Message\Request(
             'GET',
             $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
             $headers,
@@ -1055,8 +1045,8 @@ class SdkOrdersApi
     {
         $options = [];
         if ($this->config->getDebug()) {
-            $options[RequestOptions::DEBUG] = fopen($this->config->getDebugFile(), 'a');
-            if (!$options[RequestOptions::DEBUG]) {
+            $options[\GuzzleHttp\RequestOptions::DEBUG] = fopen($this->config->getDebugFile(), 'a');
+            if (!$options[\GuzzleHttp\RequestOptions::DEBUG]) {
                 throw new \RuntimeException('Failed to open the debug file: ' . $this->config->getDebugFile());
             }
         }

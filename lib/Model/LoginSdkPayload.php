@@ -28,9 +28,6 @@
 
 namespace RPay\POK\PaymentsSdk\Model;
 
-use \ArrayAccess;
-use \RPay\POK\PaymentsSdk\ObjectSerializer;
-
 /**
  * LoginSdkPayload Class Doc Comment
  *
@@ -42,7 +39,7 @@ use \RPay\POK\PaymentsSdk\ObjectSerializer;
  * @template TKey int|null
  * @template TValue mixed|null
  */
-class LoginSdkPayload implements ModelInterface, ArrayAccess, \JsonSerializable
+class LoginSdkPayload implements ModelInterface, \ArrayAccess, \JsonSerializable
 {
     const DISCRIMINATOR = null;
 
@@ -327,7 +324,7 @@ class LoginSdkPayload implements ModelInterface, ArrayAccess, \JsonSerializable
      */
     public function jsonSerialize()
     {
-       return ObjectSerializer::sanitizeForSerialization($this);
+       return \RPay\POK\PaymentsSdk\ObjectSerializer::sanitizeForSerialization($this);
     }
 
     /**
@@ -338,7 +335,7 @@ class LoginSdkPayload implements ModelInterface, ArrayAccess, \JsonSerializable
     public function __toString()
     {
         return json_encode(
-            ObjectSerializer::sanitizeForSerialization($this),
+            \RPay\POK\PaymentsSdk\ObjectSerializer::sanitizeForSerialization($this),
             JSON_PRETTY_PRINT
         );
     }
@@ -350,7 +347,7 @@ class LoginSdkPayload implements ModelInterface, ArrayAccess, \JsonSerializable
      */
     public function toHeaderValue()
     {
-        return json_encode(ObjectSerializer::sanitizeForSerialization($this));
+        return json_encode(\RPay\POK\PaymentsSdk\ObjectSerializer::sanitizeForSerialization($this));
     }
 }
 

@@ -28,8 +28,6 @@
 
 namespace RPay\POK\PaymentsSdk;
 
-use RPay\POK\PaymentsSdk\Model\ModelInterface;
-
 /**
  * ObjectSerializer Class Doc Comment
  *
@@ -81,7 +79,7 @@ class ObjectSerializer
 
         if (is_object($data)) {
             $values = [];
-            if ($data instanceof ModelInterface) {
+            if ($data instanceof \RPay\POK\PaymentsSdk\Model\ModelInterface) {
                 $formats = $data::openAPIFormats();
                 foreach ($data::openAPITypes() as $property => $openAPIType) {
                     $getter = $data::getters()[$property];
