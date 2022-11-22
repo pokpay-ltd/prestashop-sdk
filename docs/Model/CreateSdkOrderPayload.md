@@ -11,6 +11,7 @@
 | **shippingCost**            | **float**                                                                 |             | [optional]         |
 | **webhookUrl**              | **string**                                                                |             | [optional]         |
 | **redirectUrl**             | **string**                                                                |             | [optional]         |
+| **failRedirectUrl**         | **string**                                                                |             | [optional]         |
 | **merchantCustomReference** | **string**                                                                |             | [optional]         |
 | **deeplink**                | **string**                                                                |             | [optional]         |
 | **splitWith**               | [**\RPay\POK\PaymentsSdk\Model\SdkOrderSplitWith**](SdkOrderSplitWith.md) |             | [optional]         |

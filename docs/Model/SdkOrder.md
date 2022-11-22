@@ -13,6 +13,7 @@
 | **createdAt**               | [**\DateTime**](\DateTime.md)                                             |             |                    |
 | **expiresAt**               | [**\DateTime**](\DateTime.md)                                             |             |                    |
 | **redirectUrl**             | **string**                                                                |             | [optional]         |
+| **failRedirectUrl**         | **string**                                                                |             | [optional]         |
 | **merchantCustomReference** | **string**                                                                |             | [optional]         |
 | **merchant**                | [**\RPay\POK\PaymentsSdk\Model\Merchant**](Merchant.md)                   |             | [optional]         |
 | **self**                    | [**\RPay\POK\PaymentsSdk\Model\SdkOrderSelf**](SdkOrderSelf.md)           |             | [optional]         |
